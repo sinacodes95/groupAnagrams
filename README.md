@@ -94,7 +94,7 @@ $ npm install
 $ npm run test
 ```
 ### Big O Analysis
-I will implement idea 3 which will have a time complexity of `O(n * m)` and a space complexity of `O(m)`.
+I will implement idea 2 which will have a time complexity of `O(n * m)` and a space complexity of `O(n * m)`.
 ### Reasons Behind Data Structures Chosen
 I will use an array of length 26 to store the first 26 prime numbers which will be used to generate unique values for words and it's anagrams.
 The reason to use an array instead of an map is because an array will have set indecies which can be used to link to each letter of the word instead of having
