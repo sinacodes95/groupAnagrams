@@ -51,7 +51,7 @@ In this solution I have come up with 3 ideas, each one being (arguably) an impro
 1. This idea will be similar to the first idea except step 3 where the need for sorting each word will be removed.
 2. A common way of calculating equality of words is to compare the product of the ASCII values of the letters.
 3. However it is possible different combinations of letters may produce the same result and a method of unique value generation is required.
-4. A common pattern is to use prime numbers, to avoid the issue stated above, as when selected prime numbers are multiplied they'll produce unique values for each word expect anagrams.
+4. A common pattern is to use prime numbers, to avoid the issue stated above, as when selected prime numbers are multiplied they'll produce unique values for each word expect anagrams. There is However a limit to this as the `MAX_VALUE` which is the largest number possible in JavaScript has the value of `1.7976931348623157e+308`
 5. The size of the map can be improved by taking advantage of the assumption that the words are sorted in ascending order.
 As anagrms can only be of the same length once all words for a certain length have been proccessed they can be printed out
 and their position in the map deleted to avoid storing all words within the map. This is still however `O(n * m)` complexity in worst case.
