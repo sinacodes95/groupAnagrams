@@ -11,10 +11,9 @@ describe('Given a GroupAnagrams class has been declared' , () => {
     expect(() => groupAnagramsTest.main()).not.toThrowError();
   });
   test('When an incorrect path has been given it should throw an error', () => {
-    const groupAnagramsTest = new GroupAnagrams('invalidpath');
-    const groupAnagramsTest2 = new GroupAnagrams();
+    const groupAnagramsTest = new GroupAnagrams('invalid/path.log');
     expect(() => groupAnagramsTest.main()).toThrowError();
-    expect(() => groupAnagramsTest2.main()).toThrowError();
+    expect(() => new GroupAnagrams()).toThrowError();
   });
 });
 
