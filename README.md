@@ -40,12 +40,12 @@ In this solution I have come up with 3 ideas, each one being (arguably) an impro
 6. Then iterate through map and print its values.
 
   #### Time Complexity
-    - Streaming uses iteration which will be `O(n)`
-    - Each word will be sorted, JavaScript internally uses a merge sort solution which has a time complexity of `O(m * logm)`
-    - Over all: `O(n * m * logm)`
+  - Streaming uses iteration which will be `O(n)`
+  - Each word will be sorted, JavaScript internally uses a merge sort solution which has a time complexity of `O(m * logm)`
+  - Over all: `O(n * m * logm)`
 
   #### Space Complexity
-    - Each word will be stored in the map with their group resulting in O(n * m) -> definite bottle neck maybe an external cache such as redis can be used?
+  - Each word will be stored in the map with their group resulting in `O(n * m)` -> definite bottle neck, words of the same size will need to be deleted from store before moving on to word of the next size.
 
 ## Idea 2 (Remove sorting bottle neck)
 1. This idea will be similar to the first idea except step 3 where the need for sorting each word will be removed.
@@ -57,49 +57,61 @@ As anagrms can only be of the same length once all words for a certain length ha
 and their position in the map deleted to avoid storing all words within the map. This is still however `O(n * m)` complexity in worst case.
 
   #### Time Complexity
-    - Streaming uses iteration which will be `O(n)`.
-    - I will have to iterate through each word in order to calculate it's value based on the prime numbers which is `O(m)`.
-    - Overall: `O(n * m)`
+  - Streaming uses iteration which will be `O(n)`.
+  - I will have to iterate through each word in order to calculate it's value based on the prime numbers which is `O(m)`.
+  - Overall: `O(n * m)`
 
   #### Space Complexity
-    -  Does not improve in the worst case - Each word will be stored in the map with their group resulting in `O(n * m)`
+  - Does not improve in the worst case - Each word will be stored in the map with their group resulting in `O(n * m)`.
 
 ## Idea 3 (Remove mapping bottle neck)
 1. This idea will build apon ideas 1 and 2.
 2. We can improve the space complexity further by providing an external cache solution such as Redis to store the groups of anagrams.
 
   #### Time Complexity
-    - Will remain `O(n * m)`
+  - Will remain `O(n * m)`
 
   #### Space Complexity
-    -  Will improve as only one word will be loaded into memory at a time `O(m)`
+  -  Will improve as only one word will be loaded into memory at a time `O(m)`
 
 # Code
 ## Chosen Language
-I have chosen TypeScript as I am comfortable using it and it will sufficient for this solution
+I have chosen TypeScript as I am comfortable using it and it will be sufficient for this solution
 
 ### How To Run
 #### Pre-requisites:
  - Node.js and NPM
 
 To run the app you may do:
+-  note the space between `--` and the file path.
 ```
 $ npm install
-$ npm run build
-$ node ./build/index.js <FILE_PATH>
+$ npm run start -- <FILE_PATH relative to your current directory>
 ```
 To run the tests you may do:
 ```
 $ npm install
 $ npm run test
 ```
+To run the lint you may do:
+```
+$ npm install
+$ npm run lint
+```
 ### Big O Analysis
-I will implement idea 2 which will have a time complexity of `O(n * m)` and a space complexity of `O(n * m)`.
+I will implement idea 2 which will have a time complexity of `O(n * m)` and a space complexity of `O(n * m)` in worst case.
 ### Reasons Behind Data Structures Chosen
-I will use an array of length 26 to store the first 26 prime numbers which will be used to generate unique values for words and it's anagrams.
+- I will use an array of length 26 to store the first 26 prime numbers which will be used to generate unique values for words and it's anagrams.
 The reason to use an array instead of an map is because an array will have set indecies which can be used to link to each letter of the word instead of having
 a key value pair of prime number to letter.
+- For grouping the anagrams of the same size I will use a map, a key value pair where the key will be the hash of the letters and the value will be a list of
+words matching that key. Since only letters of the same size will fit into memory then once they have been printed out they will be deleted from the map to make space 
+for the words of the next size.
 ### What I Would Do Given More Time
+  #### External cache
+  Given more time I would set up an external cache system such as Redis to keep track of groups of anagrams.
+  The advantage of this solution is having free memory on the local system since the anagrams are stored elsewhere.
+
   #### Dockerisation
   Given more time I would dockerised the app to ensure that it runs independantly of the machine and it would have the same environment on any other
   machine.
@@ -113,4 +125,17 @@ a key value pair of prime number to letter.
   - A CI/CD pipeline will allow for easier iterations and improvements of the code.
 
 # Tests
+To run the tests execute the following commands:
+```
+$ npm install
+$ npm run test
+```
+
+There is 100% test coverage based on the coverage feedback provided by `Jest`. 
+- The tests include Non-trivial functional tests which test the internal 
+logic of the solution to ensure that the algorithm works correctly.
+- The tests include edge cases which would break the code if not handled correctly,
+the tests show that the solution is fairly resilient and can fail gracefully if required.
+- Given more time I would've performed load tests as well in order to gauge an understanding of the
+overall load limitations of the solution.
 
